@@ -1,5 +1,6 @@
 package com.jwtaccessrefresh.config;
 
+import com.jwtaccessrefresh.security.CustomAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,8 +35,11 @@ public class SecurityConfig {
 
     private UserDetailsService userDetailsService;
 
-    public SecurityConfig(@Lazy UserDetailsService userDetailsService) {
+    private CustomAuthenticationFilter customAuthenticationFilter;
+
+    public SecurityConfig(@Lazy UserDetailsService userDetailsService, CustomAuthenticationFilter customAuthenticationFilter) {
         this.userDetailsService = userDetailsService;
+        this.customAuthenticationFilter = customAuthenticationFilter;
     }
 
     @Bean
@@ -55,7 +59,8 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authenticationProvider(authenticationProvider());
+                .authenticationProvider(authenticationProvider())
+                .addFilter(customAuthenticationFilter);
 
         http.headers().frameOptions().disable();
 
