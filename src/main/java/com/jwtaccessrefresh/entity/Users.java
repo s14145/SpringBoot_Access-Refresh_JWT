@@ -42,4 +42,10 @@ public class Users implements Serializable {
               inverseJoinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "roleId"))
     private List<Role> roles;
 
+    public Users(String name, String username, String password, List<Role> roles) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
 }

@@ -23,4 +23,8 @@ public class Role implements Serializable {
     @NotBlank(message = "Role name is a required field")
     @Size(min = 3, max = 20, message = "Role name should be between 3 and 20 characters")
     private String roleName;
+
+    public Role(String roleName) {
+        this.roleName = roleName;
+    }
 }
