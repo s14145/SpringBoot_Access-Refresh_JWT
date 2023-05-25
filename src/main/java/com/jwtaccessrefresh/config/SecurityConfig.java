@@ -1,11 +1,9 @@
 package com.jwtaccessrefresh.config;
 
 import com.jwtaccessrefresh.security.CustomAuthenticationFilter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -20,8 +18,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
-import java.security.Security;
-
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
@@ -30,6 +26,8 @@ import static org.springframework.http.HttpMethod.POST;
 public class SecurityConfig {
 
     private static final String[] PUBLIC_URLS = {"/login/**", "/swagger-resources/**", "/swagger-ui.html/**"};
+
+    private static final String[] USER_ADMIN_URLS = {"/api/v1/users/**"};
 
     private static final String[] ADMIN_URLS = {"/api/v1/users/**", "/api/v1/roles/**"};
 
@@ -49,7 +47,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .antMatchers(PUBLIC_URLS)
                 .permitAll()
-                .antMatchers(GET, "/api/v1/users/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers(GET, USER_ADMIN_URLS).hasAnyRole("USER", "ADMIN")
                 .antMatchers(POST, ADMIN_URLS).hasRole("ADMIN")
                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
                 .permitAll()
